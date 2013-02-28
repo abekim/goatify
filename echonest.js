@@ -28,7 +28,7 @@ var echo = echojs({
 });
 
 // http://developer.echonest.com/docs/v4/song.html#search
-var location = __dirname + '/tswift.mp3';
+var location = __dirname + '/codemonkey.mp3';
 fs.readFile(location, function (err, buffer) {
   echo('track/upload').post({
     filetype: path.extname(location).substr(1)
