@@ -71,5 +71,3 @@ var http = require('http');
 		     console.log("Got error: " + e.message);   
 		});   
 	 });
-
-
