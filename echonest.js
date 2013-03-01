@@ -47,27 +47,35 @@ var http = require('http');
 //   });
 // });
 
-	var md5 = "55decf96c51b2ae39813064555a80f8c";
-	 echo('track/profile').get({
-	 	md5 : md5,
-	 	bucket : "audio_summary",
-	 	format : "json" 
-	 }, function (err, json) {
-	 	var url = json.response.track.audio_summary.analysis_url;
-	 	console.log("analysis url:" , url);
-		var req = http.get(url, function(res) {  
-	        var output = '';
-	        res.setEncoding('utf8');
-	        res.on('data', function (chunk) {
-	            output += chunk;
-	        });
-	        res.on('end', function() {
-	            var obj = JSON.parse(output);
-	            // console.log(obj.segments.map(function(each) {
-	            // 	return each;
-	            // }));
-	        });
-		}).on('error', function(e) {  
-		     console.log("Got error: " + e.message);   
-		});   
-	 });
+var md5 = "55decf96c51b2ae39813064555a80f8c";
+ echo('track/profile').get({
+ 	md5 : md5,
+ 	bucket : "audio_summary",
+ 	format : "json" 
+ }, function (err, json) {
+ 	var url = json.response.track.audio_summary.analysis_url;
+ 	console.log("analysis url:" , url);
+	var req = http.get(url, function(res) {  
+        var output = '';
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            output += chunk;
+        });
+        res.on('end', function() {
+            var obj = JSON.parse(output);
+
+            fs.writeFile('message.txt', 'Hello Node', function (err) {
+              if (err) throw err;
+              console.log('It\'s saved!');
+            });
+
+            var anal = obj.segments.map(function(each) {
+            	return each;
+            });
+        });
+	}).on('error', function(e) {  
+	     console.log("Got error: " + e.message);   
+	});   
+ });
+
+            
