@@ -53,6 +53,7 @@ fs.readFile(location, function (err, buffer) {
 	            var timbre = obj.segments.map(function(each) {
 	            	return each;
 	            });
+	            fs.writeFile(location + ".txt", JSON.stringify(timbre));
 	            console.log(timbre);
 	        });
 		}).on('error', function(e) {  
