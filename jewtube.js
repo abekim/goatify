@@ -1,7 +1,7 @@
 var youtubedl = require('youtube-dl');
 var ffmpeg = require('fluent-ffmpeg');
 
-var tubeID='IG822ENuIsQ';
+var tubeID='RWAdb1vgoik';
 
 var dl = youtubedl.download('http://www.youtube.com/watch?v='+tubeID,
   './',['--max-quality=18',]);
@@ -31,7 +31,10 @@ dl.on('end', function(data) {
   console.log('Average Speed in Bytes: ' + data.averageSpeedBytes);
 
   var proc = new ffmpeg({ source: data.filename })
-  .saveToFile('./'+tubeID+'.mp3', function(stdout, stderr) {
+  .saveToFile('./'+tubeID+'.mp3', function(out, err) {
+    console.log(tubeID+'.mp3')
+    console.log(err)
+    console.log(out)
     console.log('file has been converted succesfully');
   });
 });

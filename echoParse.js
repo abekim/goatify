@@ -3,67 +3,70 @@ var echojs = require('echojs')
   , path = require('path')
   , http = require('http');
 
-var num_bins  = 50;
+var num_bins  = 10;
 var num_goats = 5;
 
 var echo = echojs({
   key: process.env.ECHONEST_KEY || "7IHNQPBMVZ3JSVAKQ"
 });
 
-var location = 'tay.mp3';
-fs.readFile(location, function (err, buffer) {
-  console.log("error: ", err);
-  echo('track/upload').post({
-    filetype: path.extname(location).substr(1)
-  }, 'application/octet-stream', buffer, function (err, json) {
-	 var md5 = json.response.track.md5;
-	 echo('track/profile').get({
-	 	md5 : md5,
-	 	bucket : "audio_summary",
-	 	format : "json" 
-	 }, function (err, json) {
-	 	var url = json.response.track.audio_summary.analysis_url;
-	 	console.log("analysis url:" , url);
-		var req = http.get(url, function(res) {  
-	        var output = '';
-	        res.setEncoding('utf8');
-	        res.on('data', function (chunk) {
-	            output += chunk;
-	        });
-	        res.on('end', function() {
-	            var obj = JSON.parse(output);
-	            var timbre = obj.segments.map(function(each) {
-	            	return each;
-	            });
-	            var starts = timbre.map(function(each) {
-			  		return each.start;
-			  	});
-			    
-			    var loudnesses = timbre.map(function(each) {
-			      return -parseFloat(each.timbre[7]);  //7 and 8 and 9 are good for tswift
-			    });
+exports.analyzeTrack = function(req, res) {
+  var location = 'screaming-goat.mp3';
+  fs.readFile(location, function (err, buffer) {
+    console.log("error: ", err);
+    echo('track/upload').post({
+      filetype: path.extname(location).substr(1)
+    }, 'application/octet-stream', buffer, function (err, json) {
+  	 var md5 = json.response.track.md5;
+  	 echo('track/profile').get({
+  	 	md5 : md5,
+  	 	bucket : "audio_summary",
+  	 	format : "json" 
+  	 }, function (err, json) {
+  	 	var url = json.response.track.audio_summary.analysis_url;
+  	 	console.log("analysis url:" , url);
+  		var req = http.get(url, function(res) {  
+  	        var output = '';
+  	        res.setEncoding('utf8');
+  	        res.on('data', function (chunk) {
+  	            output += chunk;
+  	        });
+  	        res.on('end', function() {
+  	            var obj = JSON.parse(output);
+  	            var timbre = obj.segments.map(function(each) {
+  	            	return each;
+  	            });
+  	            var starts = timbre.map(function(each) {
+  			  		return each.start;
+  			  	});
+  			    
+  			    var loudnesses = timbre.map(function(each) {
+  			      return -parseFloat(each.timbre[7]);  //7 and 8 and 9 are good for tswift
+  			    });
+  
+  			    var durations = timbre.map(function(each) {
+  			      return parseFloat(each.duration);
+  			    });
+  
+  			    var confidences = timbre.map(function(each) {
+  			      return parseFloat(each.confidence);
+  			    });  
+  
+  			    var binned = binSong(starts, durations, loudnesses, confidences);
+  			    binned.sort(cmp);
+  			    var goatLocs = binned.slice(0,5).map(function(each) {
+  			      return {"start": each[1], "duration" : each[2]};
+  			    });
+  			    res.send(goatLocs);
 
-			    var durations = timbre.map(function(each) {
-			      return parseFloat(each.duration);
-			    });
-
-			    var confidences = timbre.map(function(each) {
-			      return parseFloat(each.confidence);
-			    });  
-
-			    var binned = binSong(starts, durations, loudnesses, confidences);
-			    binned.sort(cmp);
-			    console.log(binned.slice(0,5).map(function(each) {
-			      return {"start": each[1], "duration" : each[2]};
-			    }));
-			  });
-		}).on('error', function(e) {  
-		     console.log("Got error: " + e.message);   
-		});   
-	 }); 	 
+  			  });
+  		}).on('error', function(e) {  
+  		     console.log("Got error: " + e.message);   
+  		});   
+  	 }); 	 
+    });
   });
-});
-
+}
 function cmp(a, b) {
     return b[0] - a[0];
 }
@@ -78,7 +81,7 @@ function binSong(starts, durations, loudnesses, confidences) {
   var current_ind   = 0;
   for (i=0; i<loudnesses.length; i++) {
     if (starts[i] > nextTarget) {
-      binned.push([current_tot / current_ind, starts[i] - spacing, spacing]);
+      binned.push([current_tot / current_ind, starts[i] - spacing/2.0, .5]);
       current_tot  = 0;
       current_ind  = 0;
       nextTarget += spacing;
