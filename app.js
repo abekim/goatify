@@ -4,11 +4,16 @@
  */
 
 var express = require('express')
+  , echojs = require('echojs')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , analyze = require('./routes/analyze');
+
+app.echo = echojs({
+  key: process.env.ECHONEST_KEY || "7IHNQPBMVZ3JSVAKQ"
+});
 
 var app = express();
 
