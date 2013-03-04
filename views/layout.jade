@@ -26,7 +26,7 @@ html(lang='en')
             ul.nav
               block nav-content
             form.navbar-search.pull-right(method="POST", action="/analyze")
-              input.search-query(type='text', placeholder='Enter the URL of the video here')
+              input.search-query(type='text', name='video_url', placeholder='Enter the URL of the video here')
               
     .container
       block content

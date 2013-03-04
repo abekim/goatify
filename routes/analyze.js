@@ -91,5 +91,5 @@ function binSong(starts, loudnesses) {
 
 //render video
 exports.loadVideo = function (req, res) {
-
+  console.log("video yet to be loaded");
 };
