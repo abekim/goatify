@@ -12,7 +12,7 @@ var num_bins  = 10;
 var num_goats = 5;
 
 var location = 'screaming-goat.mp3';
-var id       = 'sample';
+var id       = 'sample';                //this would be the youtube video id
 
 exports.analyzeTrack = function(req, res) {
   models.Tube.findOne({video_id : id}, function(err, vid) {
@@ -36,7 +36,7 @@ exports.analyzeTrack = function(req, res) {
     	  });
     	  ress.on('end', function() {
     	    var segments = JSON.parse(output).segments;
-          var starts = segments.map(function(each) {
+          var starts   = segments.map(function(each) {
     				return each.start;
     			});
     			var loudnesses = segments.map(function(each) {
@@ -65,7 +65,7 @@ function cmp(a, b) {
     return b[0] - a[0];
 }
 
-//bins the song into x regions and returns the average loudness of the region, the beginning of the region
+//bins the song into x regions and returns the average loudness of the region and the beginning of the region
 function binSong(starts, loudnesses) {
   //lord have mercy on me
 
