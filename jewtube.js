@@ -1,6 +1,10 @@
 var youtubedl = require('youtube-dl');
-var dl = youtubedl.download('http://www.youtube.com/watch?v=vNoKguSdy4Y',
-  './videos');
+var ffmpeg = require('fluent-ffmpeg');
+
+var tubeID='IG822ENuIsQ';
+
+var dl = youtubedl.download('http://www.youtube.com/watch?v='+tubeID,
+  './',['--max-quality=18',]);
 
 // will be called when the download starts
 dl.on('download', function(data) {
@@ -9,10 +13,6 @@ dl.on('download', function(data) {
   console.log('size: ' + data.size);
 });
 
-// will be called during download progress of a video
-dl.on('progress', function(data) {
-  process.stdout.write(data.eta + ' ' + data.percent + '% at ' + data.speed + '\r');
-});
 
 // catches any errors
 dl.on('error', function(err) {
@@ -22,10 +22,16 @@ dl.on('error', function(err) {
 // called when youtube-dl finishes
 dl.on('end', function(data) {
   console.log('\nDownload finished!');
+  console.log(data)
   console.log('Filename: ' + data.filename);
   console.log('Size: ' + data.size);
   console.log('Time Taken: ' + data.timeTaken);
   console.log('Time Taken in ms: ' + data.timeTakenms);
   console.log('Average Speed: ' + data.averageSpeed);
   console.log('Average Speed in Bytes: ' + data.averageSpeedBytes);
+
+  var proc = new ffmpeg({ source: data.filename })
+  .saveToFile('./'+tubeID+'.mp3', function(stdout, stderr) {
+    console.log('file has been converted succesfully');
+  });
 });
