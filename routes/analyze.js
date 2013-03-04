@@ -88,3 +88,8 @@ function binSong(starts, loudnesses) {
   }
   return binned;
 }
+
+//render video
+exports.loadVideo = function (req, res) {
+
+};

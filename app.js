@@ -30,7 +30,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/analyze', analyze.analyzeTrack)
+app.post('/analyze/', analyze.analyzeTrack); //post with { video_id: [video_id] }
+app.get('/analyze/:video_id', analyze.);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

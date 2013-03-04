@@ -1,7 +1,36 @@
-doctype 5
-html
+!!! 5
+html(lang='en')
   head
     title= title
+    meta(charset='utf-8')
+    link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css", rel="stylesheet")
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js")
+
+    style
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+
   body
-    block content
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container
+          button.btn.btn-navbar(type='button', data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='/') 
+            strong Goatify.js
+          .nav-collapse.collapse
+            ul.nav
+              block nav-content
+            form.navbar-search.pull-right(method="POST", action="/analyze")
+              input.search-query(type='text', placeholder='Enter the URL of the video here')
+              
+    .container
+      block content
+
+    script(src="http://code.jquery.com/jquery-latest.js")
+    script(src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js")
+    script(src="/javascripts/main.js")
