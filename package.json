@@ -6,11 +6,8 @@
     "start": "node app"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "express": "3.0.6",
-=======
-    "express": "3.1.0",
->>>>>>> ed25aa943d3fc3dd6df9699cab828fd903b31a46
+    "express": "3.x",
+    "mongoose": "3.x",
     "jade": "*"
   }
 }
