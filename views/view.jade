@@ -1,12 +1,16 @@
 extends layout
 
 block nav-content
-  li.active
+  li
     a(href='/') Home
 
 block content
   h1= title
-  ul.unstyled
-    each tube in tubes
-      a(href="/analyze/#{tube.video_id}")
-        li tube.name
+  //-#{tube.video_id}
+  center.video
+    #player(data-id='#{video_id}')
+    //-iframe(width='853', height='480', src='http://www.youtube.com/v/#{video_id}&autoplay=1&autohide=1', frameborder='0', allowfullscreen)
+  center.goat'
+    img(src="/images/goat.jpg", width='853', height='480')
+
+  script(src='//www.youtube.com/iframe_api')

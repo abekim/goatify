@@ -11,11 +11,11 @@ var express = require('express')
   , path = require('path')
   , analyze = require('./routes/analyze');
 
+var app = express();
+
 app.echo = echojs({
   key: process.env.ECHONEST_KEY || "7IHNQPBMVZ3JSVAKQ"
 });
-
-var app = express();
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -35,7 +35,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.post('/analyze/', analyze.analyzeTrack); //post with { video_id: [video_id] }
+app.post('/analyze', analyze.analyzeTrack); //post with { video_id: [video_id] }
 app.get('/analyze/:video_id', analyze.loadVideo);
 
 http.createServer(app).listen(app.get('port'), function(){

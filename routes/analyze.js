@@ -14,10 +14,17 @@ var num_goats = 5;
 var location = 'screaming-goat.mp3';
 var id       = 'sample';                //this would be the youtube video id
 
+//this function is where all the backend stuff is supposed to happen, including:
+//    getting the mp3 off the youtube video
+//    analyzing
+//    creating new Tube object based on the id & saving the object
 exports.analyzeTrack = function(req, res) {
+  //get video id
+  var id = req.body.video_url.substr(req.body.video_url.indexOf('v=') + 2, 11);
   models.Tube.findOne({video_id : id}, function(err, vid) {
     if (vid) {
-      res.render('analyze', {title : "Found result", locs : JSON.parse(vid.locs)});
+      // res.render('analyze', {title : "Found result", locs : JSON.parse(vid.locs)});
+      res.redirect('/analyze/' + vid.id, { locs: JSON.parse(vid.locs) });
     }
     else  {
       fs.readFile(location, function (err, buffer) {
@@ -50,7 +57,8 @@ exports.analyzeTrack = function(req, res) {
           var tube = new models.Tube({video_id : id, locs : JSON.stringify(goatLocs)});
           tube.save(function(err) {
             console.log(err);
-            res.render('analyze', {title : "sample result", locs : goatLocs});
+            // res.render('analyze', {title : "sample result", locs : goatLocs});
+            res.redirect('/anaylze/' + id, { locs: JSON.stringify(goatLocs) });
             });
    			  });
      	  }); 
@@ -91,5 +99,9 @@ function binSong(starts, loudnesses) {
 
 //render video
 exports.loadVideo = function (req, res) {
-  console.log("video yet to be loaded");
+  console.log(req.params.video_id);
+  res.render('view', { title: 'title title title', video_id: req.params.video_id });
+  // models.Tube.findOne({ video_id: req.params.video_id }).exec(function (err, tube) {
+  //   res.render('view', { tube: tube });
+  // });
 };
