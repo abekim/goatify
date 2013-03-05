@@ -19,7 +19,7 @@ exports.analyzeTrack = function(location, id,res) {
   models.Tube.findOne({video_id : id}, function(err, vid) {
     if (vid) {
       // return vid.locs;
-      res.render('analyze', {title : "Found result", locs : JSON.parse(vid.locs)});
+      res.render('analyze', {title : "Found result", locs : (vid.locs)});
     }
     else  {
       console.log(location);
@@ -28,6 +28,7 @@ exports.analyzeTrack = function(location, id,res) {
         echo('track/upload').post({
         filetype: path.extname(location).substr(1)
       }, 'application/octet-stream', buffer, function (err, json) {
+        console.log(json.response);
     	echo('track/profile').get({md5 : json.response.track.md5, bucket : "audio_summary",	format : "json" }, function (err, json) {
     	var url = json.response.track.audio_summary.analysis_url;
     	setTimeout(function() {
@@ -65,7 +66,19 @@ exports.analyzeTrack = function(location, id,res) {
    });
   }
  });
-}
+};
+
+exports.analysisPage= function(req,res){
+  res.render('addAnalysis',{title:'backdoor'});
+};
+
+exports.addAnalysis= function(req,res){
+  var tube = new models.Tube({video_id : req.body.videoID, locs : JSON.parse(req.body.analJSON)});
+  tube.save(function(err) {
+    console.log(err);
+    res.render('addAnalysis', {title : "sample result"});
+  });
+};
 
 function cmp(a, b) {
     return b[0] - a[0];
