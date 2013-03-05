@@ -16,7 +16,6 @@ var num_goats = 5;
 // var id       = 'sample';                //this would be the youtube video id
 
 exports.analyzeTrack = function(location, id,res) {
-  console.log(res);
   models.Tube.findOne({video_id : id}, function(err, vid) {
     if (vid) {
       // return vid.locs;
@@ -31,7 +30,7 @@ exports.analyzeTrack = function(location, id,res) {
       }, 'application/octet-stream', buffer, function (err, json) {
     	echo('track/profile').get({md5 : json.response.track.md5, bucket : "audio_summary",	format : "json" }, function (err, json) {
     	var url = json.response.track.audio_summary.analysis_url;
-    	console.log("analysis url:" , url);
+    	setTimeout(function() {
     	var req = http.get(url, function(ress) {  
     	  var output = '';
     	  ress.setEncoding('utf8');
@@ -39,7 +38,8 @@ exports.analyzeTrack = function(location, id,res) {
     	    output += chunk;
     	  });
     	  ress.on('end', function() {
-    	    var segments = JSON.parse(output).segments;
+          console.log(output);
+  	      var segments = JSON.parse(output).segments;
           var starts   = segments.map(function(each) {
     				return each.start;
     			});
@@ -59,6 +59,7 @@ exports.analyzeTrack = function(location, id,res) {
             });
    			  });
      	  }); 
+        }, 10000);
        }); 	 
      });
    });
