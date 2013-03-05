@@ -11,8 +11,8 @@ var echo = echojs({
 var num_bins  = 10;
 var num_goats = 5;
 
-var location = 'screaming-goat.mp3';
-var id       = 'sample';                //this would be the youtube video id
+// var location = 'screaming-goat.mp3';
+// var id       = 'sample';                //this would be the youtube video id
 
 //this function is where all the backend stuff is supposed to happen, including:
 //    getting the mp3 off the youtube video

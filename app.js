@@ -9,7 +9,10 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
-  , analyze = require('./routes/analyze');
+  , analyze = require('./routes/analyze')
+  , video= require('./routes/video');
+
+var app = express();
 
 var app = express();
 
@@ -37,6 +40,7 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.post('/analyze', analyze.analyzeTrack); //post with { video_id: [video_id] }
 app.get('/analyze/:video_id', analyze.loadVideo);
+app.get('/download',video.downloadVideo);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
