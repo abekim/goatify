@@ -2,8 +2,8 @@ $(function () {
   window.sound = new Audio('/audio/goat.mp3');
   setInterval(function () {
     var current = player.getCurrentTime();
-    console.log(current, isBetween(current, 6, 2));
-    if (isBetween(current, 6, 2)) { toggle(true); } else { toggle(false); }
+    //use for loop to iterate through start/duration
+    if (isBetween(current, start, duration)) { toggle(true); } else { toggle(false); }
   }, 200);
 });
 
