@@ -11,10 +11,10 @@ var echo = echojs({
 var num_bins  = 10;
 var num_goats = 5;
 
-var location = 'screaming-goat.mp3';
-var id       = 'sample';                //this would be the youtube video id
+// var location = 'screaming-goat.mp3';
+// var id       = 'sample';                //this would be the youtube video id
 
-exports.analyzeTrack = function(req, res) {
+exports.analyzeTrack = function(location,id) {
   models.Tube.findOne({video_id : id}, function(err, vid) {
     if (vid) {
       res.render('analyze', {title : "Found result", locs : JSON.parse(vid.locs)});
