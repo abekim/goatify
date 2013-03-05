@@ -18,7 +18,7 @@ $(function () {
         toggle(false);
         isGoat = false; 
       }
-  }, 200);
+  }, 1000);
 });
 
 function cmp(a, b) {
