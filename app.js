@@ -12,6 +12,10 @@ var express = require('express')
   , analyze = require('./routes/analyze')
   , video= require('./routes/video');
 
+app.echo = echojs({
+  key: process.env.ECHONEST_KEY || "7IHNQPBMVZ3JSVAKQ"
+});
+
 var app = express();
 
 app.echo = echojs({
