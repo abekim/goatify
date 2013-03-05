@@ -74,7 +74,7 @@ exports.analysisPage= function(req,res){
 };
 
 exports.addAnalysis= function(req,res){
-  var tube = new models.Tube({video_id : req.body.videoID, locs : JSON.parse(req.body.analJSON)});
+  var tube = new models.Tube({video_id : req.body.videoID, locs : JSON.stringify(req.body.analJSON)});
   tube.save(function(err) {
     console.log(err);
     res.render('addAnalysis', {title : "sample result"});
