@@ -12,10 +12,6 @@ var express = require('express')
   , analyze = require('./routes/analyze')
   , video= require('./routes/video');
 
-app.echo = echojs({
-  key: process.env.ECHONEST_KEY || "7IHNQPBMVZ3JSVAKQ"
-});
-
 var app = express();
 
 app.echo = echojs({
@@ -42,7 +38,7 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.post('/analyze', analyze.analyzeTrack); //post with { video_id: [video_id] }
 app.get('/analyze/:video_id', analyze.loadVideo);
-app.get('/download/:video_id',video.downloadVideo);
+app.get('/download/:video_id', video.downloadVideo);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
