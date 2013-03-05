@@ -3,10 +3,14 @@ var youtubedl = require('youtube-dl')
     , analyze = require('./analyze')
     , fs = require('fs');
 
-
+exports.skipDownload=function(req,res){
+  var tubeID = req.params.video_id;
+  analyze.analyzeTrack('./'+tubeID+'.mp3',tubeID,res);
+}
 exports.downloadVideo=function(req,res){
   var id = req.params.video_url.substr(req.params.video_url.indexOf('v=') + 2, 11);
   var tubeID = req.params.video_id;
+
   fs.exists(tubeID+'.mp3', function(exists) {
       if (exists) {
         console.log('shortcutting dl. file already exists')
@@ -37,7 +41,6 @@ exports.downloadVideo=function(req,res){
           console.log('Time Taken in ms: ' + data.timeTakenms);
           console.log('Average Speed: ' + data.averageSpeed);
           console.log('Average Speed in Bytes: ' + data.averageSpeedBytes);
-
           var proc = new ffmpeg({ source: data.filename })
           .saveToFile('./'+tubeID+'.mp3', function(out, err) {
             console.log(tubeID+'.mp3')

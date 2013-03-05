@@ -38,7 +38,11 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.post('/analyze', analyze.analyzeTrack); //post with { video_id: [video_id] }
 app.get('/analyze/:video_id', analyze.loadVideo);
-app.get('/download/:video_id', video.downloadVideo);
+app.get('/download/:video_id',video.downloadVideo);
+app.get('/skip/:video_id',video.skipDownload);
+app.post('/analysis/new',analyze.addAnalysis);
+app.get('/newAnalysis',analyze.analysisPage);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
