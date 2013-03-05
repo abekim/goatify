@@ -11,6 +11,7 @@ var express = require('express')
   , path = require('path')
   , analyze = require('./routes/analyze')
   , video= require('./routes/video');
+
 var app = express();
 
 app.echo = echojs({
@@ -41,6 +42,7 @@ app.get('/download/:video_id',video.downloadVideo);
 app.get('/skip/:video_id',video.skipDownload);
 app.post('/analysis/new',analyze.addAnalysis);
 app.get('/newAnalysis',analyze.analysisPage);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

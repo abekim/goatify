@@ -1,5 +1,3 @@
-
-
 var youtubedl = require('youtube-dl')
     , ffmpeg = require('fluent-ffmpeg')
     , analyze = require('./analyze')
@@ -10,6 +8,7 @@ exports.skipDownload=function(req,res){
   analyze.analyzeTrack('./'+tubeID+'.mp3',tubeID,res);
 }
 exports.downloadVideo=function(req,res){
+  var id = req.params.video_url.substr(req.params.video_url.indexOf('v=') + 2, 11);
   var tubeID = req.params.video_id;
 
   fs.exists(tubeID+'.mp3', function(exists) {
@@ -19,7 +18,6 @@ exports.downloadVideo=function(req,res){
       } else {
         var dl = youtubedl.download('http://www.youtube.com/watch?v='+tubeID,
           './',['--max-quality=18',]);
-
         // will be called when the download starts
         dl.on('download', function(data) {
           console.log('Download started');
@@ -51,7 +49,6 @@ exports.downloadVideo=function(req,res){
             }
             console.log('conversion out: ',out)
             console.log('file has been converted succesfully');
-            exports.res = res;
             analyze.analyzeTrack('./'+tubeID+'.mp3',tubeID,res);
           });
         });

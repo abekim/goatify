@@ -15,11 +15,12 @@ var num_goats = 5;
 // var location = 'screaming-goat.mp3';
 // var id       = 'sample';                //this would be the youtube video id
 
-exports.analyzeTrack = function(location, id,res) {
+exports.analyzeTrack = function(location, id, res) {
   models.Tube.findOne({video_id : id}, function(err, vid) {
     if (vid) {
       // return vid.locs;
       res.render('analyze', {title : "Found result", locs : (vid.locs)});
+
     }
     else  {
       console.log(location);
@@ -56,7 +57,7 @@ exports.analyzeTrack = function(location, id,res) {
           tube.save(function(err) {
             console.log(err);
             // return locs;
-            res.render('analyze', {title : "sample result", locs : goatLocs});
+            res.redirect('/analyze/' + id, {analysis : JSON.parse(vid.locs)});
             });
    			  });
      	  }); 
@@ -112,7 +113,7 @@ function binSong(starts, loudnesses) {
 //render video
 exports.loadVideo = function (req, res) {
   console.log(req.params.video_id);
-  res.render('view', { title: 'title title title', video_id: req.params.video_id });
+  res.render('view', { title: 'Goatify.js', video_id: req.params.video_id });
   // models.Tube.findOne({ video_id: req.params.video_id }).exec(function (err, tube) {
   //   res.render('view', { tube: tube });
   // });
