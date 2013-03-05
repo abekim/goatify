@@ -8,7 +8,7 @@ $(function () {
     var current = player.getCurrentTime();
     //use for loop to iterate through start/duration
     var goatInd = 0;
-      if (isBetween(current, locs[0].start, locs[0].duration)) { 
+      if (isBetween(current, locs[0].start, locs[0].duration + 1.5)) { 
         toggle(true); 
         if (!isGoat && locs.length > 1) {
           locs.shift();
