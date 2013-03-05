@@ -4,7 +4,8 @@ var youtubedl = require('youtube-dl')
     , fs = require('fs');
 
 
-exports.downloadVideo = function(req,res){
+exports.downloadVideo=function(req,res){
+  var id = req.params.video_url.substr(req.params.video_url.indexOf('v=') + 2, 11);
   var tubeID = req.params.video_id;
   fs.exists(tubeID+'.mp3', function(exists) {
       if (exists) {
