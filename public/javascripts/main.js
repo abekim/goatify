@@ -3,8 +3,8 @@ $(function () {
     player.mute();
     $('.video').css('display','none');
     $('.goat').css('display','block');
-    var sound = $('<embed autoplay="true" height="0" width="0" />');
-    sound.attr('src', urlOfMyMp3);
+    var sound = $('<embed autoplay="true" height="0" width="0" autoplay="true" />');
+    sound.attr('src', '/audio/goat.mp3');
     $('#scream').html(sound);
   }
 });
