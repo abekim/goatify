@@ -10,7 +10,8 @@
     "jade": "*",
     "mongoose": "3.x",
     "youtube-dl": "*",
-    "fluent-ffmpeg": "*"
+    "fluent-ffmpeg": "*",
+    "echojs": "*"
   },
   "engines": {
     "node": "0.8.14 ",
