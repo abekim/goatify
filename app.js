@@ -36,7 +36,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.post('/analyze/', analyze.analyzeTrack); //post with { video_id: [video_id] }
+app.post('/analyze', analyze.analyzeTrack); //post with { video_id: [video_id] }
 app.get('/analyze/:video_id', analyze.loadVideo);
 app.get('/download',video.downloadVideo);
 

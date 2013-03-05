@@ -1,9 +1,9 @@
 
 
-var youtubedl = require('youtube-dl');
-var ffmpeg = require('fluent-ffmpeg');
-var analyze = require('./analyze');
-var fs = require('fs');
+var youtubedl = require('youtube-dl')
+    , ffmpeg = require('fluent-ffmpeg')
+    , analyze = require('./analyze')
+    , fs = require('fs');
 
 
 exports.downloadVideo=function(req,res){

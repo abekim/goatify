@@ -1,12 +1,51 @@
 extends layout
 
 block nav-content
-  li.active
+  li
     a(href='/') Home
 
 block content
   h1= title
-  ul.unstyled
-    each tube in tubes
-      a(href="/analyze/#{tube.video_id}")
-        li tube.name
+  //-#{tube.video_id}
+  center.video
+    #player(data-id='#{video_id}')
+    //-iframe(width='853', height='480', src='http://www.youtube.com/v/#{video_id}&autoplay=1&autohide=1', frameborder='0', allowfullscreen)
+  center.goat'
+    img(src="/images/goat.jpg", width='853', height='480')
+    #scream
+
+  script(src='//www.youtube.com/iframe_api')
+  script
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '480',
+        width: '853',
+        videoId: $('#player').attr('data-id'),
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+      event.target.playVideo();
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+    //  if (event.data == YT.PlayerState.PLAYING && !done) {
+    //    setTimeout(stopVideo, 6000);
+    //    done = true;
+    //  }
+    }
+    function stopVideo() {
+      player.stopVideo();
+    }
