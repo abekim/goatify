@@ -2,7 +2,8 @@ var echojs = require('echojs')
   , fs = require('fs')
   , path = require('path')
   , http = require('http')
-  , models = require("../models/models");
+  , models = require("../models/models")
+  , video = require("./video");
 
 var echo = echojs({
   key: process.env.ECHONEST_KEY || "7IHNQPBMVZ3JSVAKQ"
@@ -14,19 +15,15 @@ var num_goats = 5;
 // var location = 'screaming-goat.mp3';
 // var id       = 'sample';                //this would be the youtube video id
 
-//this function is where all the backend stuff is supposed to happen, including:
-//    getting the mp3 off the youtube video
-//    analyzing
-//    creating new Tube object based on the id & saving the object
-exports.analyzeTrack = function(req, res) {
-  //get video id
-  var id = req.body.video_url.substr(req.body.video_url.indexOf('v=') + 2, 11);
+exports.analyzeTrack = function(location, id,res) {
+  console.log(res);
   models.Tube.findOne({video_id : id}, function(err, vid) {
     if (vid) {
-      // res.render('analyze', {title : "Found result", locs : JSON.parse(vid.locs)});
-      res.redirect('/analyze/' + vid.id, { locs: JSON.parse(vid.locs) });
+      // return vid.locs;
+      res.render('analyze', {title : "Found result", locs : JSON.parse(vid.locs)});
     }
     else  {
+      console.log(location);
       fs.readFile(location, function (err, buffer) {
         console.log("error: ", (err) ? err : "None");
         echo('track/upload').post({
@@ -47,7 +44,7 @@ exports.analyzeTrack = function(req, res) {
     				return each.start;
     			});
     			var loudnesses = segments.map(function(each) {
-    			  return -parseFloat(each.segments[7]);  //7 and 8 and 9 are good for tswift
+    			  return -parseFloat(each.timbre[7]);  //7 and 8 and 9 are good for tswift
     			});
     			var binned = binSong(starts, loudnesses);
     			binned.sort(cmp);
@@ -57,8 +54,8 @@ exports.analyzeTrack = function(req, res) {
           var tube = new models.Tube({video_id : id, locs : JSON.stringify(goatLocs)});
           tube.save(function(err) {
             console.log(err);
-            // res.render('analyze', {title : "sample result", locs : goatLocs});
-            res.redirect('/anaylze/' + id, { locs: JSON.stringify(goatLocs) });
+            // return locs;
+            res.render('analyze', {title : "sample result", locs : goatLocs});
             });
    			  });
      	  }); 
@@ -84,7 +81,8 @@ function binSong(starts, loudnesses) {
   var current_ind   = 0;
   for (i=0; i<loudnesses.length; i++) {
     if (starts[i] > nextTarget) {
-      binned.push([current_tot / current_ind, starts[i] - spacing/2.0, .5]);
+      binned.push([current_tot / current_ind, starts[i] - spacing/2.0, (Math.random(1) + 1) / 2.0
+]);
       current_tot  = 0;
       current_ind  = 0;
       nextTarget += spacing;
