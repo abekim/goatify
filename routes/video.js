@@ -7,7 +7,7 @@ var youtubedl = require('youtube-dl')
 
 
 exports.downloadVideo=function(req,res){
-  var tubeID='RWAdb1vgoik';
+  var tubeID = req.params.video_id;
   fs.exists(tubeID+'.mp3', function(exists) {
       if (exists) {
         console.log('shortcutting dl. file already exists')
@@ -48,7 +48,6 @@ exports.downloadVideo=function(req,res){
             }
             console.log('conversion out: ',out)
             console.log('file has been converted succesfully');
-            console.log(req, res);
             exports.res = res;
             analyze.analyzeTrack('./'+tubeID+'.mp3',tubeID,res);
           });
