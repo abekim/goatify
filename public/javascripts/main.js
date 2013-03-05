@@ -1,7 +1,8 @@
 $(function () {
 
   window.sound = new Audio('/audio/goat.mp3');
-  var locs = JSON.parse($("#dataLoc").attr("data-loc"));
+  var locs = JSON.parse(JSON.parse($("#dataLoc").attr("data-loc")));
+  locs.sort(cmp);
   var isGoat = false;
   setInterval(function () {
     var current = player.getCurrentTime();
@@ -18,9 +19,11 @@ $(function () {
         isGoat = false; 
       }
   }, 200);
-    
-
 });
+
+function cmp(a, b) {
+    return b[0] - a[0];
+}
 
 function isBetween(current, start, duration) {
   return current > start && current < (start + duration);
