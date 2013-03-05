@@ -3,7 +3,7 @@ $(function () {
   setInterval(function () {
     var current = player.getCurrentTime();
     //use for loop to iterate through start/duration
-    if (isBetween(current, start, duration)) { toggle(true); } else { toggle(false); }
+    if (isBetween(current, 6, 2)) { toggle(true); } else { toggle(false); }
   }, 200);
 });
 
