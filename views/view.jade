@@ -7,11 +7,11 @@ block nav-content
 block content
   //-#{tube.video_id}
   center.video
-    #player(data-id='#{video_id}')
+    #player(data-id='#{tube.video_id}')
     //-iframe(width='853', height='480', src='http://www.youtube.com/v/#{video_id}&autoplay=1&autohide=1', frameborder='0', allowfullscreen)
   center.goat
     img(src='/images/goat.jpg', width='853px', height='480px')
-
+  div(id="dataLoc", data-loc="#{tube.locs}")
   script(src='//www.youtube.com/iframe_api')
   script
     // 3. This function creates an <iframe> (and YouTube player)

@@ -98,9 +98,12 @@ function binSong(starts, loudnesses) {
 
 //render video
 exports.loadVideo = function (req, res) {
-  console.log(req.params.video_id);
-  res.render('view', { title: 'Goatify.js', video_id: req.params.video_id });
-  // models.Tube.findOne({ video_id: req.params.video_id }).exec(function (err, tube) {
-  //   res.render('view', { tube: tube });
-  // });
+  models.Tube.findOne({ video_id: req.params.video_id }).exec(function (err, tube) {
+    if (tube) {
+      res.render('view', { title : "Goatify.js", tube: tube }); 
+    }
+    else {
+      res.send(":(");
+    }
+  });
 };

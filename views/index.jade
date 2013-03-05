@@ -6,10 +6,12 @@ block nav-content
 
 block content
   h1= title
+  input.input-large.search-query(type='text', id='video_url', placeholder='Enter the URL of the video here')
+  button.btn(type='submit', style="margin-left: 10px", onClick = "window.location = '/analyze/' + $('#video_url').val()") Search
   h3 Recently Played
   ul.unstyled
     each tube in tubes
       div
-        a(href="/download/#{tube.video_id}")
+        a(href="/analyze/#{tube.video_id}")
           iframe(width='420', height='245', src='http://www.youtube.com/embed/#{tube.video_id}')
           span Launch video!
